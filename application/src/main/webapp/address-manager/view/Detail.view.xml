@@ -58,9 +58,6 @@
 					<Column>
 						<Text text="{i18n>country}"/>
 					</Column>
-					<Column>
-						<Text text="{i18n>AddressTimeZone}"/>
-					</Column>
 					<Column hAlign="End">
 						<Text text="{i18n>actions}"/>
 					</Column>
@@ -71,7 +68,6 @@
 							<Text text="{details>StreetName} {details>HouseNumber}" />
 							<Text text="{details>PostalCode} {details>CityName}" />
 							<Text text="{details>Country}" />
-							<Text text="{details>AddressTimeZone}" />
 							<HBox justifyContent="End">
 								<Button type="Transparent" icon="sap-icon://edit" press="onEditAddress" />
 								<Button type="Transparent" icon="sap-icon://delete" press="onDeleteAddress" />

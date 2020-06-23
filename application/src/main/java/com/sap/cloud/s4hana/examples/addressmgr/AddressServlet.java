@@ -35,14 +35,14 @@ public class AddressServlet extends HttpServlet {
         final BusinessPartnerAddress address;
         try {
             address = getAddressFromBody(request);
-        } catch (JsonParseException e) {
+        } catch (final JsonParseException e) {
             logger.warn("Error while trying to parse address from body.", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     String.format("Request body is not a valid address object in JSON format: %s.", e.getMessage()));
             return;
         }
 
-        if(!validateInputForCreate(address)) {
+        if (!validateInputForCreate(address)) {
             logger.warn("Invalid request to create an address: {}.", address);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     "Bad request: business partner of address needs to be specified.");
@@ -55,7 +55,7 @@ public class AddressServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_CREATED);
             response.setContentType("application/json");
             response.getWriter().write(new Gson().toJson(addressCreated));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("Error while creating address {} in SAP S/4HANA.", address, e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Could not create address due to error while calling SAP S/4HANA.");
@@ -68,7 +68,7 @@ public class AddressServlet extends HttpServlet {
         return new Gson().fromJson(body, BusinessPartnerAddress.class);
     }
 
-    private boolean validateInputForCreate(BusinessPartnerAddress addressToCreate) {
+    private boolean validateInputForCreate(final BusinessPartnerAddress addressToCreate) {
         return !Strings.isNullOrEmpty(addressToCreate.getBusinessPartner());
     }
 
@@ -77,7 +77,7 @@ public class AddressServlet extends HttpServlet {
             throws ServletException, IOException {
         final String businessPartnerId = request.getParameter("businessPartnerId");
         final String addressId = request.getParameter("addressId");
-        if(!validateIds(businessPartnerId, addressId)) {
+        if (!validateIds(businessPartnerId, addressId)) {
             logger.warn("Invalid request to update: at least one mandatory parameter was invalid, query was: {}",
                     request.getQueryString());
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -88,61 +88,60 @@ public class AddressServlet extends HttpServlet {
         final BusinessPartnerAddress addressFromBody;
         try {
             addressFromBody = getAddressFromBody(request);
-        } catch (JsonParseException e) {
+        } catch (final JsonParseException e) {
             logger.warn("Error while trying to parse address from body.", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     String.format("Request body is not a valid address object in JSON format: %s.", e.getMessage()));
             return;
         }
 
-        if(!validateInputForUpdate(addressFromBody, businessPartnerId, addressId)) {
-            logger.warn("Invalid request to update: at least one mismatch between body and query, query was: {}" +
-                            "; and parsed body was: {}.", request.getQueryString(), addressFromBody);
+        if (!validateInputForUpdate(addressFromBody, businessPartnerId, addressId)) {
+            logger.warn("Invalid request to update: at least one mismatch between body and query, query was: {}"
+                    + "; and parsed body was: {}.", request.getQueryString(), addressFromBody);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     "Address in body must have none or matching identifiers.");
             return;
         }
 
-        final BusinessPartnerAddress addressToUpdate = createAddressToUpdate(businessPartnerId, addressId, addressFromBody);
+        final BusinessPartnerAddress addressToUpdate = createAddressToUpdate(businessPartnerId, addressId,
+                addressFromBody);
 
         logger.info("Received patch request to update address {}", addressToUpdate);
         try {
             new UpdateAddressCommand(service, addressToUpdate).execute();
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             logger.error("Error while updating address {} in SAP S/4HANA.", addressToUpdate, e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    String.format("Could not update address %s of business partner %s" +
-                            " due to error while calling SAP S/4HANA.", addressId, businessPartnerId));
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, String.format(
+                    "Could not update address %s of business partner %s" + " due to error while calling SAP S/4HANA.",
+                    addressId, businessPartnerId));
         }
     }
 
-    private BusinessPartnerAddress createAddressToUpdate(String businessPartnerId, String addressId,
-                                                         BusinessPartnerAddress addressFromBody) {
+    private BusinessPartnerAddress createAddressToUpdate(final String businessPartnerId, final String addressId,
+            final BusinessPartnerAddress addressFromBody) {
         final BusinessPartnerAddress addressToUpdate = BusinessPartnerAddress.builder()
-                .businessPartner(businessPartnerId)
-                .addressID(addressId)
-                .build();
+                .businessPartner(businessPartnerId).addressID(addressId).build();
         // Only change properties for which non-null values have been provided
-        if(addressFromBody.getStreetName() != null)
+        if (addressFromBody.getStreetName() != null)
             addressToUpdate.setStreetName(addressFromBody.getStreetName());
-        if(addressFromBody.getHouseNumber() != null)
+        if (addressFromBody.getHouseNumber() != null)
             addressToUpdate.setHouseNumber(addressFromBody.getHouseNumber());
-        if(addressFromBody.getCityName() != null)
+        if (addressFromBody.getCityName() != null)
             addressToUpdate.setCityName(addressFromBody.getCityName());
-        if(addressFromBody.getPostalCode() != null)
+        if (addressFromBody.getPostalCode() != null)
             addressToUpdate.setPostalCode(addressFromBody.getPostalCode());
-        if(addressFromBody.getCountry() != null)
+        if (addressFromBody.getCountry() != null)
             addressToUpdate.setCountry(addressFromBody.getCountry());
         return addressToUpdate;
     }
 
-    private boolean validateInputForUpdate(BusinessPartnerAddress addressFromBody, String businessPartnerId,
-                                           String addressId) {
+    private boolean validateInputForUpdate(final BusinessPartnerAddress addressFromBody, final String businessPartnerId,
+            final String addressId) {
         return (addressFromBody.getBusinessPartner() == null
-                    || addressFromBody.getBusinessPartner().equals(businessPartnerId)) &&
-                (addressFromBody.getAddressID() == null || addressFromBody.getAddressID().equals(addressId));
+                || addressFromBody.getBusinessPartner().equals(businessPartnerId))
+                && (addressFromBody.getAddressID() == null || addressFromBody.getAddressID().equals(addressId));
     }
 
     @Override
@@ -151,7 +150,7 @@ public class AddressServlet extends HttpServlet {
         final String businessPartnerId = request.getParameter("businessPartnerId");
         final String addressId = request.getParameter("addressId");
 
-        if(!validateIds(businessPartnerId, addressId)) {
+        if (!validateIds(businessPartnerId, addressId)) {
             logger.warn("Invalid request to delete: at least one mandatory parameter was invalid, query was: {}",
                     request.getQueryString());
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -164,16 +163,16 @@ public class AddressServlet extends HttpServlet {
             new DeleteAddressCommand(service, businessPartnerId, addressId).execute();
 
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-        } catch (Exception e) {
-            logger.error("Error while deleting address {} of business partner {} in SAP S/4HANA.",
-                    addressId, businessPartnerId, e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    String.format("Could not delete address %s of business partner %s" +
-                            " due to error while calling SAP S/4HANA.", addressId, businessPartnerId));
+        } catch (final Exception e) {
+            logger.error("Error while deleting address {} of business partner {} in SAP S/4HANA.", addressId,
+                    businessPartnerId, e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, String.format(
+                    "Could not delete address %s of business partner %s" + " due to error while calling SAP S/4HANA.",
+                    addressId, businessPartnerId));
         }
     }
 
-    private boolean validateIds(String businessPartnerId, String addressId) {
+    private boolean validateIds(final String businessPartnerId, final String addressId) {
         return (!Strings.isNullOrEmpty(businessPartnerId) && businessPartnerId.length() <= 10) &&
                 (!Strings.isNullOrEmpty(addressId) && addressId.length() <= 10);
     }

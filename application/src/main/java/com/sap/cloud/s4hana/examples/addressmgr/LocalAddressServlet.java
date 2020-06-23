@@ -66,7 +66,6 @@ public class LocalAddressServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request, final HttpServletResponse resp) throws IOException {
         final AddressView addressView = getAddressFromBody(request);
         final Address address = ViewModelConverter.convertAddressViewToAddress(addressView);
-
         address.setStatus(Status.NEW.toString());
         logger.info("Received post request to create local address {}", address);
 
@@ -118,6 +117,8 @@ public class LocalAddressServlet extends HttpServlet {
                         break;
                     case REJECTED:
                         rejectAddress(address, entityManager);
+                        break;
+                    default:
                         break;
                 }
             }

@@ -8,7 +8,7 @@ import com.google.gson.JsonParseException;
 import com.sap.cloud.s4hana.examples.addressmgr.commands.CreateAddressCommand;
 import com.sap.cloud.s4hana.examples.addressmgr.commands.DeleteAddressCommand;
 import com.sap.cloud.s4hana.examples.addressmgr.commands.UpdateAddressCommand;
-import com.sap.cloud.s4hana.examples.addressmgr.util.HttpServlet2;
+import com.sap.cloud.s4hana.examples.addressmgr.util.HttpServlett;
 import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartnerAddress;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;

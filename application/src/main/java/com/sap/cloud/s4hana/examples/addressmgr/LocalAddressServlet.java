@@ -17,7 +17,7 @@ import com.sap.cloud.s4hana.examples.addressmgr.commands.CreateAddressCommand;
 import com.sap.cloud.s4hana.examples.addressmgr.datasource.MultitenantEntityManagerFacade;
 import com.sap.cloud.s4hana.examples.addressmgr.models.Address;
 import com.sap.cloud.s4hana.examples.addressmgr.models.Status;
-import com.sap.cloud.s4hana.examples.addressmgr.util.HttpServlet2;
+import com.sap.cloud.s4hana.examples.addressmgr.util.HttpServlett;
 import com.sap.cloud.s4hana.examples.addressmgr.views.AddressView;
 import com.sap.cloud.s4hana.examples.addressmgr.views.ViewModelConverter;
 import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;

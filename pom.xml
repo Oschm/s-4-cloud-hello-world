@@ -55,6 +55,7 @@
                             <goal>enforce</goal>
                         </goals>
                         <configuration>
+                         <linkXRef>false</linkXRef>
                             <rules>
                                 <requireMavenVersion>
                                     <version>3.3.9</version>

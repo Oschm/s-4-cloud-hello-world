@@ -1,15 +1,15 @@
 package com.sap.cloud.s4hana.examples.addressmgr.commands;
 
-import org.slf4j.Logger;
+//import org.slf4j.Logger;
 
-import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
+//import com.sap.cloud.sdk.cloudplatform.logging.CloudLoggerFactory;
 import com.sap.cloud.sdk.frameworks.hystrix.HystrixUtil;
 import com.sap.cloud.sdk.s4hana.connectivity.ErpCommand;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.namespaces.businesspartner.BusinessPartnerAddress;
 import com.sap.cloud.sdk.s4hana.datamodel.odata.services.BusinessPartnerService;
 
 public class CreateAddressCommand extends ErpCommand<BusinessPartnerAddress> {
-    private static final Logger logger = CloudLoggerFactory.getLogger(CreateAddressCommand.class);
+  //  private static final Logger logger = CloudLoggerFactory.getLogger(CreateAddressCommand.class);
 
     private final BusinessPartnerService service;
     private final BusinessPartnerAddress addressToCreate;

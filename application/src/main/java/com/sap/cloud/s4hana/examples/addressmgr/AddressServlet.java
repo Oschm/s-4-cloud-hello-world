@@ -173,7 +173,7 @@ public class AddressServlet extends MyHttpServlet {
     }
 
     private boolean validateIds(final String businessPartnerId, final String addressId) {
-        return (!Strings.isNullOrEmpty(businessPartnerId) && businessPartnerId.length() <= 10) &&
-                (!Strings.isNullOrEmpty(addressId) && addressId.length() <= 10);
+        return !Strings.isNullOrEmpty(businessPartnerId) && businessPartnerId.length() <= 10 &&
+                !Strings.isNullOrEmpty(addressId) && addressId.length() <= 10;
     }
 }
